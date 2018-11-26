@@ -1,5 +1,7 @@
+import GA
 
 def report_day(day):
-    print(day)
+    GA.get_day_report(day)
+
 
 
