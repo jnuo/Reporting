@@ -25,7 +25,8 @@ def get_day_report(day):
     print('Getting report for ' + str(day))
     ga = initialize_analyticsreporting()
     rep = get_report(ga, day, day)
-    print_response(rep)
+    #print_response(rep)
+    return rep
 
 
 
