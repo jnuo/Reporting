@@ -7,4 +7,3 @@ yesterday = today - timedelta.Timedelta( days = 1 )
 
 Reporter.report_day(yesterday)
 
-
