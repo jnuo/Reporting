@@ -24,12 +24,12 @@ def initialize_analyticsreporting():
 def get_day_report(day):
     print('Getting report for ' + str(day))
     ga = initialize_analyticsreporting()
-    rep = get_report(ga)
+    rep = get_report(ga, day, day)
     print_response(rep)
 
 
 
-def get_report(analytics):
+def get_report(analytics, start, end):
     """Queries the Analytics Reporting API V4.
 
     Args:
@@ -42,9 +42,23 @@ def get_report(analytics):
             'reportRequests': [
                 {
                     'viewId': VIEW_ID,
-                    'dateRanges': [{'startDate': '7daysAgo', 'endDate': 'yesterday'}],
-                    'metrics': [{'expression': 'ga:sessions'}],
-                    'dimensions': [{'name': 'ga:country'}]
+                    'dateRanges': [{'startDate': str(start), 'endDate': str(end)}],
+                    'metrics':
+                        [
+                            {'expression': 'ga:sessions'}
+                            , {'expression': 'ga:newUsers'}
+                            , {'expression': 'ga:users'}
+                            , {'expression': 'ga:transactions'}
+                            , {'expression': 'ga:transactionRevenue'}
+                            , {'expression': 'ga:metric2'}
+                        ],
+                    'dimensions':
+                        [
+                            {'name': 'ga:date'}
+                            , {'name': 'ga:channelGrouping'}
+                            , {'name': 'ga:sourceMedium'}
+                            , {'name': 'ga:campaign'}
+                         ]
                 }]
         }
     ).execute()
@@ -62,16 +76,18 @@ def print_response(response):
         metricHeaders = columnHeader.get('metricHeader', {}).get('metricHeaderEntries', [])
 
         for row in report.get('data', {}).get('rows', []):
+            print('\n')
+
             dimensions = row.get('dimensions', [])
             dateRangeValues = row.get('metrics', [])
 
             for header, dimension in zip(dimensionHeaders, dimensions):
-                print(header + ': ' + dimension)
+                print('  ' + header + ': ' + dimension)
 
             for i, values in enumerate(dateRangeValues):
-                print('Date range: ' + str(i))
+                print('    Date range: ' + str(i))
                 for metricHeader, value in zip(metricHeaders, values.get('values')):
-                    print(metricHeader.get('name') + ': ' + value)
+                    print('    ' + metricHeader.get('name') + ': ' + value)
 
 
 def main():
