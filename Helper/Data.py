@@ -55,7 +55,7 @@ def go():
     # df.set_index(['age'], inplace=True)
     # print(df.loc[23])
     # df.reset_index(inplace=True)
-    # print(df)
+    # print(df) asdasd
 
     df.set_index(['nick'], inplace=True)
     print(df)
