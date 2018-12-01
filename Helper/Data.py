@@ -52,10 +52,10 @@ def go():
     # print(df[df.kilo == df['kilo'].max()])
     # print(df[['name', 'age']][df.kilo == df['kilo'].max()])
 
-    df.set_index(['age'], inplace=True)
-    print(df.loc[23])
-    df.reset_index(inplace=True)
-    print(df)
+    # df.set_index(['age'], inplace=True)
+    # print(df.loc[23])
+    # df.reset_index(inplace=True)
+    # print(df)
 
     df.set_index(['nick'], inplace=True)
     print(df)
