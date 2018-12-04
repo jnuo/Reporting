@@ -4,6 +4,12 @@ import pandas as pd
 # ovalilar = df[df.name.str.contains("ovali", case=False)]
 
 
+def getGoogle(data):
+    googleData = data[data['ga:sourceMedium'].str.contains("google", case=False)]
+    criteoData = data[data['ga:sourceMedium'].str.contains("criteo", case=False)]
+    print(googleData.values.__len__())
+    return(googleData)
+
 def go():
     evciler1 = \
         [
