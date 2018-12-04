@@ -2,9 +2,16 @@
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+
+
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
-KEY_FILE_LOCATION = 'turna-com-e63f05c7ca00.json'
-VIEW_ID = '92759348'
+KEY_FILE_LOCATION = ''
+VIEW_ID = ''
 
 
 def initialize_analyticsreporting():
@@ -13,6 +20,10 @@ def initialize_analyticsreporting():
     Returns:
       An authorized Analytics Reporting API V4 service object.
     """
+    config = configparser.ConfigParser()
+    config.read('reporting_config.ini')
+    KEY_FILE_LOCATION = config.get('GA', 'KEY_FILE_LOCATION')
+
     credentials = ServiceAccountCredentials.from_json_keyfile_name(KEY_FILE_LOCATION, SCOPES)
 
     # Build the service object.
@@ -38,6 +49,7 @@ def get_report(analytics, start, end):
     Returns:
       The Analytics Reporting API V4 response.
     """
+    VIEW_ID = config.get('GA', 'VIEW_ID')
     return analytics.reports().batchGet(
         body={
             'reportRequests': [
