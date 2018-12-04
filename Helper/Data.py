@@ -10,6 +10,7 @@ def getGoogle(data):
     print(googleData.values.__len__())
     return(googleData)
 
+
 def go():
     evciler1 = \
         [
