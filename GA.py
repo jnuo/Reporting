@@ -5,7 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('reporting_config.ini')
 
 
 

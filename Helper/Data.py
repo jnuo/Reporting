@@ -10,6 +10,11 @@ def getGoogle(data):
     print(googleData.values.__len__())
     return(googleData)
 
+def get_google_dynamic_remarketing(datafr):
+    data = datafr[datafr['ga:sourceMedium'].str.contains("google", case=False)]
+    print(data.values.__len__())
+    return(data)
+
 
 def go():
     evciler1 = \
