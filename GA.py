@@ -1,4 +1,4 @@
-
+import pandas as pd
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -30,6 +30,54 @@ def initialize_analyticsreporting():
     analytics = build('analyticsreporting', 'v4', credentials=credentials)
 
     return analytics
+
+def get_google_analytics_day_report(day):
+    analyticsReport = get_day_report(day)
+    report = get_dict(analyticsReport)
+    df = pd.DataFrame(report)
+    print("df: " + df[['ga:sourceMedium', 'ga:campaign', 'ga:metric2']][df['ga:campaign'].str.contains("remarketing", case=False) | df['ga:sourceMedium'].str.contains("criteo", case=False)])
+    return df
+
+
+def get_dict(response):
+    gaReport = []
+    # gaReport format
+    #   date, channel grouping, source / medium, campaign
+    #   sessions, new users, users, transactions, revenue, totalsc
+    #   cost, roi, roas
+
+    for report in response.get('reports', []):
+        columnHeader = report.get('columnHeader', {})
+        dimensionHeaders = columnHeader.get('dimensions', [])
+        metricHeaders = columnHeader.get('metricHeader', {}).get('metricHeaderEntries', [])
+        for row in report.get('data', {}).get('rows', []):
+            rowData = \
+                {
+                    'ga:date': ''
+                    , 'ga:channelGrouping': ''
+                    , 'ga:sourceMedium': ''
+                    , 'ga:campaign': ''
+                    , 'ga:sessions': ''
+                    , 'ga:newUsers': ''
+                    , 'ga:users': ''
+                    , 'ga:transactions': ''
+                    , 'ga:transactionRevenue': ''
+                    , 'ga:metric2': ''
+                    , 'cost': ''
+                    , 'roi': ''
+                    , 'roas': ''
+                }
+            dimensions = row.get('dimensions', [])
+            dateRangeValues = row.get('metrics', [])
+            for header, dimension in zip(dimensionHeaders, dimensions):
+                # print('  ' + header + ': ' + dimension)
+                rowData[header] = dimension
+            for i, values in enumerate(dateRangeValues):
+                for metricHeader, value in zip(metricHeaders, values.get('values')):
+                    # print('    ' + metricHeader.get('name') + ': ' + value)
+                    rowData[metricHeader.get('name')] = value
+            gaReport.append(rowData)
+    return gaReport
 
 
 def get_day_report(day):

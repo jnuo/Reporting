@@ -1,25 +1,22 @@
-import Reporter
+import GA
 import datetime
 import timedelta
-import Helper.Data as dt
-import pandas as pd
+# import Helper.Data as dt
+# import pandas as pd
 
 import configparser
 
-config = configparser.ConfigParser()
-config.read('reporting_config.ini')
-
+# config = configparser.ConfigParser()
+# config.read('reporting_config.ini')
 # name = config.get('Onur','ad')
 # yas = config.get('Onur', 'yas')
 # print(name, yas)
 
 today = datetime.datetime.now().date()
 yesterday = today - timedelta.Timedelta( days = 1 )
-gaReport = Reporter.get_day_report(yesterday)
-df = pd.DataFrame(gaReport)
+day_report = GA.get_google_analytics_day_report(yesterday)
 
-googles = df[['ga:sourceMedium', 'ga:campaign', 'ga:transactions' ]][ df['ga:sourceMedium'] == "google / cpc" ]
+rows, columns = day_report.shape
+print(rows, columns)
 
-google_dyn = googles[['ga:campaign', 'ga:transactions']][ googles['ga:campaign'].str.contains("remarketing", case=False) ]
-print(google_dyn)
 
