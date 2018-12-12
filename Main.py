@@ -1,4 +1,4 @@
-import GA
+import GoogleAnalytics
 import datetime
 import timedelta
 import pandas as pd
@@ -13,13 +13,18 @@ yesterday = today - timedelta.Timedelta( days = 1 )
 
 ########
 # ok - Get analytics
-# Get ads
-# match
+
+### sprint 1 Google Ads
+### sprint 2 Facebook Ads
+### sprint 3 Criteo
+### sprint 4 output excel'i duzenle
+### sprint 5 ali
+
 # ok - out to excel
 #########
 
 # Get analytics
-day_report = GA.get_google_analytics_day_report(yesterday)
+day_report = GoogleAnalytics.get_google_analytics_day_report(yesterday)
 
 # rows, columns = day_report.shape
 # print(rows, columns)
